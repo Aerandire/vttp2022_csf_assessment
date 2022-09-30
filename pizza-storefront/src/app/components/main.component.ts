@@ -1,6 +1,8 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
+import { firstValueFrom } from 'rxjs';
 import { PizzaService } from '../pizza.service';
 
 const SIZES: string[] = [
@@ -26,7 +28,7 @@ export class MainComponent implements OnInit {
   form!: FormGroup
   pizzaSize = SIZES[0]
 
-  constructor(private fb: FormBuilder, private router: Router, private pizzaSvc: PizzaService) {
+  constructor(private fb: FormBuilder, private router: Router, private pizzaSvc: PizzaService,private http: HttpClient) {
   }
 
   ngOnInit(): void {
@@ -34,7 +36,6 @@ export class MainComponent implements OnInit {
   }
 
   private createForm(): FormGroup {
-
     return this.fb.group({
       name: this.fb.control<string>('',[Validators.required, Validators.minLength(6)]),
       email: this.fb.control<string>('', [Validators.required, Validators.email]),
@@ -50,8 +51,29 @@ export class MainComponent implements OnInit {
     const data = this.form.value
     const email = this.form.controls['email'].value
     console.info(">>>>>>>Data", data)
-    this.pizzaSvc.createOrder()
-    this.router.navigate(['/orders' , email])
+    const formData = new FormData();
+    formData.append('name', this.form.controls['name'].value);
+    formData.append('email', this.form.controls['email'].value);
+    formData.append('pizza_size', this.form.controls['pizzaS'].value);
+    formData.append('thick_crust', this.form.controls['base'].value);
+    formData.append('sauce', this.form.controls['sauce'].value);
+    formData.append('toppings', this.form.controls['toppings'].value);
+    formData.append('comments', this.form.controls['comments'].value);
+
+    this.pizzaSvc.createOrder(formData)
+      .then(result=> {
+        //console.info('>>>resultButtonpress', result)
+        this.router.navigate(['/orders' , email])
+      })
+  }
+
+  getButton(email: string){
+    this.pizzaSvc.getOrders(email)
+      .then(result=> {
+        //console.info('>>>resultButtonpress', result)
+        this.router.navigate(['/orders' , email])
+      })
+
   }
 
   onCheckboxChange(event: any) {

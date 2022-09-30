@@ -1,1 +1,18 @@
+<div>
+    <table>
+        <th>Orders from {{ email }}</th>
+        
+        <tr *ngFor="let i of orders">
+            <div class="border">
+                <td>
+                    <label bold >Order Id: {{ i.orderID }}</label>
+                </td>
+                <br>
+                <td>
+                    <label bold>${{ i.amount | number : '1.2-2' }}</label>
+                </td>
+            </div>
+        </tr>
+    </table>
+</div>
 <button type="button" [routerLink]="['/']">Back to Ordering</button>

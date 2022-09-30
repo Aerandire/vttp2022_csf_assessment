@@ -1,3 +1,4 @@
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
@@ -6,6 +7,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
 import { MainComponent } from './components/main.component';
 import { OrdersComponent } from './components/orders.component';
+import { PizzaService } from './pizza.service';
 
 const appPath: Routes = [
   { path: '', component: MainComponent },
@@ -21,10 +23,11 @@ const appPath: Routes = [
     BrowserModule,
     RouterModule.forRoot(appPath),
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule
   ],
 
-  providers: [ ],
+  providers: [ PizzaService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

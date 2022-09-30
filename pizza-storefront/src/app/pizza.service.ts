@@ -12,14 +12,17 @@ export class PizzaService {
 
   // POST /api/order
   // Add any required parameters or return type
-  createOrder() { 
+  createOrder(formData: FormData) { 
+    return firstValueFrom(    
+      this.http.post<FormData>('/api/order', formData)
+    )
   }
 
   // GET /api/order/<email>/all
   // Add any required parameters or return type
-  getOrders() { 
+  getOrders(email: string) { 
     return firstValueFrom(
-      this.http.get<OrderSummary[]>('/api/orders')
+      this.http.get<OrderSummary[]>('/api/order/' + email + '/all')
     )
   }
 
