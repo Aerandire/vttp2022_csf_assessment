@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
+import { PizzaService } from '../pizza.service';
 
 const SIZES: string[] = [
   "Personal - 6 inches",
@@ -20,11 +22,11 @@ const PizzaToppings: string[] = [
 })
 export class MainComponent implements OnInit {
 
+  path = [ '', '/orders' ]
   form!: FormGroup
-
   pizzaSize = SIZES[0]
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private router: Router, private pizzaSvc: PizzaService) {
   }
 
   ngOnInit(): void {
@@ -46,7 +48,10 @@ export class MainComponent implements OnInit {
 
   processForm() {
     const data = this.form.value
+    const email = this.form.controls['email'].value
     console.info(">>>>>>>Data", data)
+    this.pizzaSvc.createOrder()
+    this.router.navigate(['/orders' , email])
   }
 
   onCheckboxChange(event: any) {

@@ -27,5 +27,6 @@ public class OrderService {
 	// IMPORTANT: Do not change the method's signature
 	public List<OrderSummary> getOrdersByEmail(String email) {
 		// Use priceSvc to calculate the total cost of an order
+		return null;
 	}
 }

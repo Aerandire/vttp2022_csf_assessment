@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { OrderSummary } from '../models';
+import { PizzaService } from '../pizza.service';
 
 @Component({
   selector: 'app-orders',
@@ -7,9 +9,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class OrdersComponent implements OnInit {
 
-  constructor() { }
+  orders: OrderSummary[] = []
+
+  constructor(private pizzaSvc: PizzaService) { }
 
   ngOnInit(): void {
+    this.pizzaSvc.getOrders().then(
+      result=> {
+        this.orders = result
+      }
+    )
   }
 
 }
